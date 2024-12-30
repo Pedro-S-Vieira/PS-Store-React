@@ -59,5 +59,8 @@ const config: Config = {
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
+	variants: {
+		scrollbar: ['responsive'], 
+	},
 };
 export default config;
