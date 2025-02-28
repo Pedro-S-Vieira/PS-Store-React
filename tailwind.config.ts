@@ -9,6 +9,10 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			backgroundImage: {
+				"category-item-gradient": 
+				'linear-gradient(45deg, #5033C3 0%, rgba(80, 51, 195, 0.2) 100%);',
+			},
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
@@ -60,7 +64,7 @@ const config: Config = {
 	},
 	plugins: [require("tailwindcss-animate")],
 	variants: {
-		scrollbar: ['responsive'], 
+		scrollbar: ['responsive'],
 	},
 };
 export default config;
