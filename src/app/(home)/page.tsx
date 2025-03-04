@@ -3,8 +3,10 @@ import { prismaClient } from "@/app/lib/prisma";
 import ProductHorizontalList from "./components/product-horizontal-list";
 import SectionTitle from "./components/section-title";
 import PromoBanner from "./components/promo-bannner";
+import { useEffect, useState } from "react";
 
 export default async function Home() {
+
   const deals = await prismaClient.product.findMany({
     where: {
       discountPercent: {
@@ -31,10 +33,14 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col gap-8 py-8">
-      <PromoBanner
-        src="/banner-home-01.png"
-        alt="Até 55% de desconto esse mês"
-      />
+      <picture>
+        <source srcSet="/banner-home-01-desktop.png" media="(min-width: 1024px)" />
+        <PromoBanner
+          src="/banner-home-01.png"
+          alt="Até 55% de desconto esse mês"
+          className="w-full"
+        />
+      </picture>
 
       <div className="px-5">
         <Categories />
