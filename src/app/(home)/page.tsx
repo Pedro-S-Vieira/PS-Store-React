@@ -1,6 +1,6 @@
 import Categories from "./components/categories";
 import { prismaClient } from "@/app/lib/prisma";
-import ProductHorizontalList from "./components/product-horizontal-list";
+import ProductHorizontalList from "../../components/ui/product-horizontal-list";
 import SectionTitle from "./components/section-title";
 import PromoBanner from "./components/promo-bannner";
 import { useEffect, useState } from "react";
