@@ -7,21 +7,20 @@ import {
   ArrowRightIcon,
   TruckIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { CartContext } from "@/providers/cart";
 
 interface ProductInfoProps {
-  product: Pick<
-    ProductWithTotalPrice,
-    "name" | "description" | "basePrice" | "discountPercent" | "totalPrice"
-  >;
+  product: ProductWithTotalPrice;
 }
 
 const ProductInfo = ({
-  product: { name, description, basePrice, discountPercent, totalPrice },
+  product,
 }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
 
+  const { addProductToCart} = useContext(CartContext);
   const handleIncrement = () => {
     setQuantity(quantity + 1);
   };
@@ -31,22 +30,26 @@ const ProductInfo = ({
       setQuantity(quantity - 1);
     }
   };
+
+  const handleAddToCart = () => {
+    addProductToCart({...product, quantity});
+  }
   return (
     <div className="flex flex-col p-5">
-      <h2 className="text-lg">{name}</h2>
+      <h2 className="text-lg">{product.name}</h2>
 
       <div className="flex items-center gap-2">
-        <h1 className="text-xl font-bold">{totalPrice.toFixed(2)}</h1>
-        {discountPercent > 0 && (
+        <h1 className="text-xl font-bold">{product.totalPrice.toFixed(2)}</h1>
+        {product.discountPercent > 0 && (
           <Badge className="px-2 py-[2px]">
-            <ArrowDownIcon size={12} /> {discountPercent}%
+            <ArrowDownIcon size={12} /> {product.discountPercent}%
           </Badge>
         )}
       </div>
 
-      {discountPercent > 0 && (
+      {product.discountPercent > 0 && (
         <p className="text-sm line-through opacity-75">
-          R$ {Number(basePrice).toFixed(2)}
+          R$ {Number(product.basePrice).toFixed(2)}
         </p>
       )}
 
@@ -64,14 +67,14 @@ const ProductInfo = ({
 
       <div className="mt-8 flex flex-col gap-3">
         <h3 className="font-bold">Descrição</h3>
-        <p className="text-justify text-sm opacity-60">{description}</p>
+        <p className="text-justify text-sm opacity-60">{product.description}</p>
       </div>
 
-      <Button className="mt-8 font-bold uppercase">
+      <Button className="mt-8 font-bold uppercase" onClick={handleAddToCart}>
         Adicionar ao carrinho
       </Button>
 
-      <div className="flex items-center justify-between bg-accent rounded-lg px-5 py-2 mt-5">
+      <div className="mt-5 flex items-center justify-between rounded-lg bg-accent px-5 py-2">
         <div className="flex items-center gap-3">
           <TruckIcon size={20} />
 

@@ -22,6 +22,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarImage, AvatarFallback } from "./avatar";
 import { Separator } from "./separator";
 import Link from "next/link";
+import Cart from "./cart";
 
 const Header = () => {
   const { status, data } = useSession();
@@ -124,9 +125,19 @@ const Header = () => {
           <span className="text-primary">PS</span> Store
         </h1>
       </Link>
-      <Button size={"icon"} variant={"outline"}>
-        <ShoppingCartIcon />
-      </Button>
+
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size={"icon"} variant={"outline"}>
+            <ShoppingCartIcon />
+          </Button>
+        </SheetTrigger>
+        <SheetContent>
+          <Cart>
+            
+          </Cart>
+        </SheetContent>
+      </Sheet>
     </Card>
   );
 };
