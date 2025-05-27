@@ -1,4 +1,4 @@
-import { CartProduct } from "@/providers/cart";
+import { CartContext, CartProduct } from "@/providers/cart";
 import Image from "next/image";
 import { Badge } from "./badge";
 import {
@@ -9,11 +9,18 @@ import {
   TrashIcon,
 } from "lucide-react";
 import { Button } from "./button";
+import { useContext } from "react";
 interface CartItemProps {
   product: CartProduct;
 }
 
 const CartItem = ({ product }: CartItemProps) => {
+
+  const { removeProductFromCart } = useContext(CartContext);
+
+  const handleRemoveProductClick = () => {
+    removeProductFromCart(product.id);
+  }
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -54,7 +61,11 @@ const CartItem = ({ product }: CartItemProps) => {
           </div>
         </div>
       </div>
-      <Button size="icon" variant="outline">
+      <Button
+        size="icon"
+        variant="outline"
+        onClick={handleRemoveProductClick}
+      >
         <TrashIcon size={16} />
       </Button>
     </div>

@@ -15,7 +15,7 @@ interface ICartContext {
   subtotal: number;
   totalDiscount: number;
   addProductToCart: (product: CartProduct) => void;
-  //   removeProductFromCart: (product: CartProduct) => void;
+  removeProductFromCart: (productId: string) => void;
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -27,7 +27,7 @@ export const CartContext = createContext<ICartContext>({
   subtotal: 0,
   totalDiscount: 0,
   addProductToCart: () => {},
-  //   removeProductFromCart: () => {},
+  removeProductFromCart: () => {},
 });
 
 const CardProvider = ({ children }: { children: ReactNode }) => {
@@ -65,11 +65,18 @@ const CardProvider = ({ children }: { children: ReactNode }) => {
       setProducts(updatedProducts);
     } else setProducts((prevProducts) => [...prevProducts, product]);
   };
+
+  const removeProductFromCart = (productId: string) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== productId),
+    );
+  };
   return (
     <CartContext.Provider
       value={{
         products,
         addProductToCart,
+        removeProductFromCart,
         total,
         subtotal,
         totalDiscount,
