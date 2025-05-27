@@ -1,11 +1,8 @@
 import { CartContext, CartProduct } from "@/providers/cart";
 import Image from "next/image";
-import { Badge } from "./badge";
 import {
-  ArrowDownIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
-  Trash,
   TrashIcon,
 } from "lucide-react";
 import { Button } from "./button";
@@ -16,11 +13,22 @@ interface CartItemProps {
 
 const CartItem = ({ product }: CartItemProps) => {
 
-  const { removeProductFromCart } = useContext(CartContext);
+  const { removeProductFromCart, updateProductQuantity } = useContext(CartContext);
 
   const handleRemoveProductClick = () => {
     removeProductFromCart(product.id);
   }
+
+  const handleIncrement = () => {
+    updateProductQuantity(product.id, product.quantity + 1);
+  };
+
+  const handleDecrement = () => {
+    if (product.quantity > 1) {
+      updateProductQuantity(product.id, product.quantity - 1);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -49,13 +57,13 @@ const CartItem = ({ product }: CartItemProps) => {
             )}
           </div>
           <div className="flex items-center gap-1">
-            <Button size="icon" variant="outline" className="h-8 w-8">
+            <Button size="icon" variant="outline" className="h-8 w-8" onClick={handleDecrement}>
               <ArrowLeftIcon size={16} />
             </Button>
 
             <span className="text-sm">{product.quantity}</span>
 
-            <Button size="icon" variant="outline" className="h-8 w-8">
+            <Button size="icon" variant="outline" className="h-8 w-8" onClick={handleIncrement}>
               <ArrowRightIcon size={16} />
             </Button>
           </div>

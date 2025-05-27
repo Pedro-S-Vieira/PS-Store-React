@@ -14,52 +14,57 @@ const Cart = () => {
     <div className="flex h-full flex-col gap-8">
       <Badge variant="heading">
         <ShoppingCartIcon size={16} />
-        Catálogo
+        Carrinho
       </Badge>
 
       <div className="flex flex-col gap-5 overflow-hidden">
         <ScrollArea className="h-full">
-          <div className="flex gap-8 flex-col">
-          {products.map((product) => (
-            <CartItem
-            product={computeProductTotalPrice(product as any) as any}
-            key={product.id}
-            />
-          ))}
+          <div className="flex flex-col gap-8">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <CartItem
+                  product={computeProductTotalPrice(product as any) as any}
+                  key={product.id}
+                />
+              ))
+            ) : (
+              <p className="text-center">Nenhum produto no carrinho</p>
+            )}
           </div>
         </ScrollArea>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <Separator />
-        <div className="flex items-center justify-between text-xs">
-          <p>Subtotal</p>
-          <p>R$ {subtotal.toFixed(2)} </p>
+      {products.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <Separator />
+          <div className="flex items-center justify-between text-xs">
+            <p>Subtotal</p>
+            <p>R$ {subtotal.toFixed(2)} </p>
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between text-xs">
+            <p>Entrega</p>
+            <p>GRÁTIS</p>
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between text-xs">
+            <p>Descontos</p>
+            <p>- R$ {totalDiscount.toFixed(2)}</p>
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between text-xs font-bold">
+            <p>Total</p>
+            <p>R$ {total.toFixed(2)}</p>
+          </div>
+          <Button className="mt-7 font-bold uppercase">Finalizar compra</Button>
         </div>
-
-        <Separator />
-
-        <div className="flex items-center justify-between text-xs">
-          <p>Entrega</p>
-          <p>GRÁTIS</p>
-        </div>
-
-        <Separator />
-
-        <div className="flex items-center justify-between text-xs">
-          <p>Descontos</p>
-          <p>- R$ {totalDiscount.toFixed(2)}</p>
-        </div>
-
-        <Separator />
-
-        <div className="flex items-center justify-between text-xs font-bold">
-          <p>Total</p>
-          <p>R$ {total.toFixed(2)}</p>
-        </div>
-      </div>
-
-      <Button className="uppercase font-bold mt-7">Finalizar compra</Button>
+      )}
     </div>
   );
 };
