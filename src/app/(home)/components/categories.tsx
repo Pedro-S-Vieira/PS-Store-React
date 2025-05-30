@@ -1,4 +1,4 @@
-import { prismaClient } from "@/app/lib/prisma";
+import { prismaClient } from "@/lib/prisma";
 import CatagoryItem from "./category-item";
 
 const Catagories = async () => {

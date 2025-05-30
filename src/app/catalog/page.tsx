@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { LayoutGrid } from "lucide-react";
-import { prismaClient } from "@/app/lib/prisma";
+import { prismaClient } from "@/lib/prisma";
 import CatagoryItem from "./components/category-item";
 
 const CatalogPage = async () => {

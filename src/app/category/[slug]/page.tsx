@@ -1,4 +1,4 @@
-import { prismaClient } from "@/app/lib/prisma";
+import { prismaClient } from "@/lib/prisma";
 import { Badge } from "@/components/ui/badge";
 import ProductItem from "@/components/ui/product-item";
 import { CATEGORY_ICON } from "@/constants/category-icon";
@@ -13,14 +13,13 @@ const CategoryProducts = async ({ params }: any) => {
       products: true,
     },
   });
-  
+
   if (!category) {
     return null;
   }
 
   return (
     <div className="flex flex-col gap-8 p-5">
-
       <Badge variant="heading">
         {CATEGORY_ICON[params.slug as keyof typeof CATEGORY_ICON]}
         {category.name}
