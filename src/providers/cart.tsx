@@ -33,9 +33,14 @@ export const CartContext = createContext<ICartContext>({
 });
 
 const CardProvider = ({ children }: { children: ReactNode }) => {
-  const [products, setProducts] = useState<CartProduct[]>(
-    JSON.parse(localStorage.getItem("@ps-store/cart-products") || "[]"),
-  );
+  const [products, setProducts] = useState<CartProduct[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("@ps-store/cart-products");
+      setProducts(stored ? JSON.parse(stored) : []);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("@ps-store/cart-products", JSON.stringify(products));
