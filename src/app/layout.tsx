@@ -5,6 +5,8 @@ import Header from "@/components/ui/header";
 import { AuthProvider } from "@/providers/auth";
 import Footer from "@/components/ui/footer";
 import CardProvider from "@/providers/cart";
+import { Toaster } from "@/components/ui/sonner";
+import CartModal from "@/components/ui/CartDialog";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -38,6 +40,8 @@ export default function RootLayout({
               <Header />
               <div className="flex-1">{children}</div>
               <Footer />
+              <Toaster richColors />
+            <CartModal />
             </CardProvider>
           </AuthProvider>
         </div>

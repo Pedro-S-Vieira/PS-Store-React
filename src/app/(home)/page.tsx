@@ -34,7 +34,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col gap-8 py-8">
       <picture>
-        <source srcSet="/banner-home-01-desktop.png" media="(min-width: 1024px)" />
+        <source srcSet="/banner-home-00.png" media="(min-width: 1024px)" />
         <PromoBanner
           src="/banner-home-01.png"
           alt="Até 55% de desconto esse mês"
@@ -53,7 +53,7 @@ export default async function Home() {
 
       <div>
         <PromoBanner
-          src="/banner-home-02.png"
+          src="/banner-home-02-desktop.png"
           alt="Até 55% de desconto em mouses"
         />
       </div>
@@ -65,7 +65,7 @@ export default async function Home() {
 
       <div>
         <PromoBanner
-          src="/banner-home-03.png"
+          src="/banner-home-03-desktop.png"
           alt="Até 55% de desconto em mouses"
         />
       </div>

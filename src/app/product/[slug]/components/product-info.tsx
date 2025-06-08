@@ -1,26 +1,29 @@
 "use client";
-import { ProductWithTotalPrice } from "@/helpers/product";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ProductWithTotalPrice } from "@/helpers/product";
+import { CartContext } from "@/providers/cart";
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
+  Loader2Icon,
   TruckIcon,
 } from "lucide-react";
 import { useContext, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { CartContext } from "@/providers/cart";
+import { toast } from "sonner";
 
 interface ProductInfoProps {
   product: ProductWithTotalPrice;
 }
 
-const ProductInfo = ({
-  product,
-}: ProductInfoProps) => {
+const ProductInfo = ({ product }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
 
-  const { addProductToCart} = useContext(CartContext);
+  const { addProductToCart, openCart , isCartOpen} = useContext(CartContext);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleIncrement = () => {
     setQuantity(quantity + 1);
   };
@@ -31,11 +34,27 @@ const ProductInfo = ({
     }
   };
 
-  const handleAddToCart = () => {
-    addProductToCart({...product, quantity});
-  }
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+  const handleAddToCart = async () => {
+    setIsLoading(true);
+    try {
+      await delay(300);
+
+      await addProductToCart({ ...product, quantity });
+
+      toast.success("Produto adicionado ao carrinho!");
+      openCart();
+    } catch {
+      toast.error("Erro ao adicionar ao carrinho");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col p-5">
+      {isCartOpen} 3123132132123
       <h2 className="text-lg">{product.name}</h2>
 
       <div className="flex items-center gap-2">
@@ -71,7 +90,11 @@ const ProductInfo = ({
       </div>
 
       <Button className="mt-8 font-bold uppercase" onClick={handleAddToCart}>
-        Adicionar ao carrinho
+        {isLoading ? (
+          <Loader2Icon className="h-4 w-4 animate-spin" />
+        ) : (
+          "Adicionar ao carrinho"
+        )}
       </Button>
 
       <div className="mt-5 flex items-center justify-between rounded-lg bg-accent px-5 py-2">

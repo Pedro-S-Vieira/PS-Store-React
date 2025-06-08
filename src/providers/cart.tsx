@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductWithTotalPrice } from "@/helpers/product";
-import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 
 export interface CartProduct extends ProductWithTotalPrice {
   quantity: number;
@@ -17,6 +17,10 @@ interface ICartContext {
   addProductToCart: (product: CartProduct) => void;
   removeProductFromCart: (productId: string) => void;
   updateProductQuantity: (productId: string, quantity: number) => void;
+  isCartOpen: boolean;
+  setIsCartOpen: (isOpen: boolean) => void;
+  openCart: () => void;
+  closeCart: () => void;
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -30,6 +34,10 @@ export const CartContext = createContext<ICartContext>({
   addProductToCart: () => {},
   removeProductFromCart: () => {},
   updateProductQuantity: () => {},
+  isCartOpen: false,
+  setIsCartOpen: () => {},
+  openCart: () => {},
+  closeCart: () => {},
 });
 
 const CardProvider = ({ children }: { children: ReactNode }) => {
@@ -97,6 +105,11 @@ const CardProvider = ({ children }: { children: ReactNode }) => {
       }),
     );
   };
+
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const openCart = useCallback(() => setIsCartOpen(true), []);
+  const closeCart = useCallback(() => setIsCartOpen(false), []);
+
   return (
     <CartContext.Provider
       value={{
@@ -110,6 +123,10 @@ const CardProvider = ({ children }: { children: ReactNode }) => {
         cardTotalPrice: 0,
         cardBasePrice: 0,
         cardTotalDiscount: 0,
+        isCartOpen,
+        setIsCartOpen,
+        openCart,
+        closeCart,
       }}
     >
       {children}

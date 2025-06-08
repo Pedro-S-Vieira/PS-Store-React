@@ -22,10 +22,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarImage, AvatarFallback } from "./avatar";
 import { Separator } from "./separator";
 import Link from "next/link";
-import Cart from "./cart";
+import { useContext } from "react";
+import { CartContext } from "@/providers/cart";
 
 const Header = () => {
   const { status, data } = useSession();
+
+  const { openCart } = useContext(CartContext);
   const handleLoginClick = async () => {
     await signIn();
   };
@@ -100,7 +103,7 @@ const Header = () => {
                 </Button>
               </Link>
             </SheetClose>
-            
+
             <SheetClose asChild>
               <Link href={"/deals"}>
                 <Button
@@ -133,16 +136,9 @@ const Header = () => {
         </h1>
       </Link>
 
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button size={"icon"} variant={"outline"}>
-            <ShoppingCartIcon />
-          </Button>
-        </SheetTrigger>
-        <SheetContent>
-          <Cart></Cart>
-        </SheetContent>
-      </Sheet>
+      <Button onClick={openCart} variant="outline" size="icon">
+        <ShoppingCartIcon />
+      </Button>
     </Card>
   );
 };

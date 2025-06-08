@@ -3,7 +3,7 @@
 import { CartProduct } from "@/providers/cart"
 import Stripe from "stripe"
 
-export const crateCheckcout = async (prodycts: CartProduct[]) => {
+export const createCheckout = async (prodycts: CartProduct[]) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
   })

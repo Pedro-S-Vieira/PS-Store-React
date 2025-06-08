@@ -1,19 +1,21 @@
-import { ShoppingCartIcon } from "lucide-react";
+import { Loader2Icon, ShoppingCartIcon } from "lucide-react";
 import { Badge } from "./badge";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "@/providers/cart";
 import CartItem from "./cart-item";
 import { computeProductTotalPrice } from "@/helpers/product";
 import { Separator } from "./separator";
 import { ScrollArea } from "./scroll-area";
 import { Button } from "./button";
-import { crateCheckcout } from "@/actions/checkout";
+import { createCheckout } from "@/actions/checkout";
 import { loadStripe } from "@stripe/stripe-js";
 
 const Cart = () => {
   const { products, subtotal, total, totalDiscount } = useContext(CartContext);
+  const [isLoading, setIsLoading] = useState(false);
   const handleFinishPurchaseClick = async () => {
-    const checkout = await crateCheckcout(products);
+    setIsLoading(true);
+    const checkout = await createCheckout(products);
 
     const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -44,7 +46,7 @@ const Cart = () => {
       </div>
 
       {products.length > 0 && (
-        <div className="flex flex-col gap-3">
+        <div className="mt-auto flex flex-col gap-3 border-t bg-background">
           <Separator />
           <div className="flex items-center justify-between text-xs">
             <p>Subtotal</p>
@@ -75,7 +77,11 @@ const Cart = () => {
             className="mt-7 font-bold uppercase"
             onClick={handleFinishPurchaseClick}
           >
-            Finalizar compra
+            {isLoading ? (
+              <Loader2Icon className="h-4 w-4 animate-spin" />
+            ) : (
+              "Finalizar compra"
+            )}
           </Button>
         </div>
       )}
