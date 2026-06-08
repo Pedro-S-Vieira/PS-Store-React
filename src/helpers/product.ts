@@ -3,6 +3,13 @@ export interface ProductWithTotalPrice extends Product {
     totalPrice: number
 }
 
+export const formatPrice = (value: number): string => {
+    return value.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+}
+
 export const computeProductTotalPrice = (product: Product): ProductWithTotalPrice => {
     if (product.discountPercent <= 0) {
         return {

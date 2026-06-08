@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ProductWithTotalPrice } from "@/helpers/product";
+import { ProductWithTotalPrice, formatPrice } from "@/helpers/product";
 import { CartContext } from "@/providers/cart";
 import {
   ArrowDownIcon,
@@ -54,11 +54,10 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 
   return (
     <div className="flex flex-col p-5">
-      {isCartOpen} 3123132132123
       <h2 className="text-lg">{product.name}</h2>
 
       <div className="flex items-center gap-2">
-        <h1 className="text-xl font-bold">{product.totalPrice.toFixed(2)}</h1>
+        <h1 className="text-xl font-bold">R$ {formatPrice(product.totalPrice)}</h1>
         {product.discountPercent > 0 && (
           <Badge className="px-2 py-[2px]">
             <ArrowDownIcon size={12} /> {product.discountPercent}%
@@ -68,7 +67,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 
       {product.discountPercent > 0 && (
         <p className="text-sm line-through opacity-75">
-          R$ {Number(product.basePrice).toFixed(2)}
+          R$ {formatPrice(Number(product.basePrice))}
         </p>
       )}
 

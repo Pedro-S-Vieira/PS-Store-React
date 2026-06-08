@@ -3,23 +3,39 @@ import { Badge } from "./badge";
 import { useContext, useState } from "react";
 import { CartContext } from "@/providers/cart";
 import CartItem from "./cart-item";
-import { computeProductTotalPrice } from "@/helpers/product";
+import { computeProductTotalPrice, formatPrice } from "@/helpers/product";
 import { Separator } from "./separator";
 import { ScrollArea } from "./scroll-area";
 import { Button } from "./button";
 import { createCheckout } from "@/actions/checkout";
 import { loadStripe } from "@stripe/stripe-js";
+import { toast } from "sonner";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY ?? ""
+);
 
 const Cart = () => {
   const { products, subtotal, total, totalDiscount } = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(false);
+
   const handleFinishPurchaseClick = async () => {
     setIsLoading(true);
-    const checkout = await createCheckout(products);
+    try {
+      const checkout = await createCheckout(products);
+      const stripe = await stripePromise;
 
-    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+      if (!stripe) {
+        toast.error("Erro ao conectar com o sistema de pagamento.");
+        return;
+      }
 
-    stripe?.redirectToCheckout({ sessionId: checkout.id });
+      await stripe.redirectToCheckout({ sessionId: checkout.id });
+    } catch (error) {
+      toast.error("Erro ao processar o pagamento. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="flex h-full flex-col gap-8">
@@ -50,7 +66,7 @@ const Cart = () => {
           <Separator />
           <div className="flex items-center justify-between text-xs">
             <p>Subtotal</p>
-            <p>R$ {subtotal.toFixed(2)} </p>
+            <p>R$ {formatPrice(subtotal)} </p>
           </div>
 
           <Separator />
@@ -64,14 +80,14 @@ const Cart = () => {
 
           <div className="flex items-center justify-between text-xs">
             <p>Descontos</p>
-            <p>- R$ {totalDiscount.toFixed(2)}</p>
+            <p>- R$ {formatPrice(totalDiscount)}</p>
           </div>
 
           <Separator />
 
           <div className="flex items-center justify-between text-xs font-bold">
             <p>Total</p>
-            <p>R$ {total.toFixed(2)}</p>
+            <p>R$ {formatPrice(total)}</p>
           </div>
           <Button
             className="mt-7 font-bold uppercase"

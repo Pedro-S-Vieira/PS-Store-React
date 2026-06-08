@@ -8,7 +8,10 @@ export async function GET(
   try {
     const product = await prismaClient.product.findFirst({
       where: {
-        slug: params.slug
+        OR: [
+          { slug: params.slug },
+          { id: params.slug }
+        ]
       },
       include: {
         category: true

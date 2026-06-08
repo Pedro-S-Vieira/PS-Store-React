@@ -1,4 +1,5 @@
 import { CartContext, CartProduct } from "@/providers/cart";
+import { formatPrice } from "@/helpers/product";
 import Image from "next/image";
 import {
   ArrowLeftIcon,
@@ -48,11 +49,11 @@ const CartItem = ({ product }: CartItemProps) => {
 
           <div className="flex items-center gap-2">
             <p className="text-sm font-bold">
-              R$ {product.totalPrice.toFixed(2)}
+              R$ {formatPrice(product.totalPrice)}
             </p>
             {product.discountPercent > 0 && (
               <p className="text-xs line-through opacity-75">
-                R$ {Number(product.basePrice).toFixed(2)}
+                R$ {formatPrice(Number(product.basePrice))}
               </p>
             )}
           </div>
